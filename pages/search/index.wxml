@@ -1,0 +1,31 @@
+<view class="margin-xl padding-xl bg-white radius shadow shadow-lg">
+  <view class="flex justify-center">
+    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo" class='cu-btn round bg-green shadow'> 获取头像昵称 </button>
+    <block wx:else>
+      <view class='text-center'>
+        <view class="cu-avatar xl round solids" style="background-image:url({{userInfo.avatarUrl}})"></view>
+        <view class="padding">{{userInfo.nickName}}</view>
+      </view>
+    </block>
+  </view>
+</view>
+<view>
+  <form class="cu-form-group" bindsubmit='getDataFromAPI'>
+    <picker class="picker" bindchange="bindPickerChange" value="{{cityIndex}}" range="{{cityArray}}">
+      <view class="picker">
+        City:   {{cityArray[cityIndex]}}
+      </view>
+    </picker>
+    <picker class="picker" bindchange="bindPickerInterestsChange" value="{{interestsIndex}}" range="{{interestsArray}}">
+      <view class="picker">
+        Interests:   {{interestsArray[interestsIndex]}}
+      </view>
+    </picker>
+    <view>
+      <button class='cu-btn' form-type='submit'  bindTap='getCardView'>Search</button>
+    </view>
+</form>
+</view>
+<view class="text-center margin-top">
+  <text class="text-grey text-xl">Hello world</text>
+</view>
