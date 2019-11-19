@@ -24,14 +24,26 @@ Page({
     distance: "",
     startX: '',
     startY: '',
-  },
-  onLoad: function () {
+    dataObj: {}
+    },
+
+  onLoad: function (options) {
     var that = this;
     var res = wx.getSystemInfoSync();
     winWidth = res.windowWidth;
     winHeight = res.windowHeight;
-    ratio = res.pixelRatio
+      ratio = res.pixelRatio
+      console.log(options)
     this.getList()
+      //this.dataObj = JSON.parse(options);//解析得到对象
+      this.dataObj = JSON.parse(options.dataObj);//解析得到对象
+      console.log("Here we should see the result")
+      console.log(this.dataObj)
+
+      const eventChannel = this.getOpenerEventChannel()
+      eventChannel.on('acceptDataFromOpenerPage', function (data) {
+          console.log(data)
+      })
   },
   touchStart(e) {
     console.log(e, 'start')

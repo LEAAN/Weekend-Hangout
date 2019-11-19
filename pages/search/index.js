@@ -13,7 +13,9 @@ Page({
     CustomBar: app.globalData.CustomBar,
     userInfo: {},
     hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo')
+    canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    dataObj: { name: '我是name', extra: '我是extra' },
+        mockedDoubanItem: {}
   },
   // city Change Listener
   bindPickerChange: function (e) {
@@ -36,18 +38,20 @@ Page({
     console.log(realRequestURL);
     wx.request({
       url: realRequestURL,
-      success: function (res) {
-        console.log(res);
+        success: function (res) {
+            wx.navigateTo({
+                url: '/pages/index/index?dataObj=' + JSON.stringify(res.data.districts[0])
+            })
       }
     })
     wx.navigateTo({
-      url: '/pages/index/index',
+        url: '/pages/index/index'
     })
   },
   //事件处理函数
   getCardView: function () {
     wx.navigateTo({
-      url: '/pages/index/index',
+        url: '/pages/index/index',
     })
   },
   onLoad: function () {
