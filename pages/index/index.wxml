@@ -13,9 +13,7 @@
               <view class='c-star {{((item.stars/2)-1) >= index ? "red-star":""}}' data-index="{{index}}"></view>
             </block>
           </view>
-          <view class="auth-box" wx:if="{{item.auth == 1}}">参与者</view>
-          <view class="auth-box" wx:if="{{item.auth == 1}}">已认证</view>
-          <view class="auth-box auth-gray-box" wx:else="">未认证</view>
+          <view class="auth-box">要报名</view>
           <view class='star-t2'>
             <image class='icon-img' src="/pages/index/img/icon19.png"></image>
             {{item.begin_time || '--'}}
@@ -24,7 +22,7 @@
             <image class='icon-img' src="/pages/index/img/icon18.png"></image>
             {{item.address || '--'}}
             <!--<view class='distance'>活动链接 {{''}}{{item.distance}}</view>-->
-            <navigator class='distance' url = '{{item.address}}'>活动链接</navigator>
+            <navigator class='distance' url = '{{item.url}}'>活动链接</navigator>
             <view class='star-t2' display='flex'>
             </view>
           </view>
