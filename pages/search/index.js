@@ -14,8 +14,7 @@ Page({
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    dataObj: { name: '我是name', extra: '我是extra' },
-        mockedDoubanItem: {}
+    dataObj: { name: '我是name', extra: '我是extra' }
   },
   // city Change Listener
   bindPickerChange: function (e) {
@@ -35,24 +34,26 @@ Page({
   getDataFromAPI: function (e) {
     var baseDoubanURL = "https://douban.uieee.com/v2/event/list?";
     var realRequestURL = baseDoubanURL + "loc=" + this.data.cityCode[this.data.cityIndex] + "&type=" + this.data.interestsArray[this.data.interestsIndex];
-    console.log(realRequestURL);
+
+    var dataObj = { name: '我是name', extra: '我是extraaaaa' };
     wx.request({
       url: realRequestURL,
         success: function (res) {
+            console.log(JSON.stringify(res.data).length)
             wx.navigateTo({
-                url: '/pages/index/index?dataObj=' + JSON.stringify(res.data.districts[0])
+                url: '/pages/index/index?dataObj=' + JSON.stringify(res.data)
+                //url: '/pages/index/index?dataObj=' + JSON.stringify(res.data.districts[0])
+                //url: '/pages/index/index?dataObj=' + JSON.stringify(dataObj)
+
             })
       }
-    })
-    wx.navigateTo({
-        url: '/pages/index/index'
     })
   },
   //事件处理函数
   getCardView: function () {
-    wx.navigateTo({
-        url: '/pages/index/index',
-    })
+    //wx.navigateTo({
+    //    url: '/pages/index/index',
+    //})
   },
   onLoad: function () {
     if (app.globalData.userInfo) {

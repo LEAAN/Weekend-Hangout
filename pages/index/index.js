@@ -1,5 +1,6 @@
 // pages/index/index.js
 import mockArr from './mock.js'
+const utils = require('../../utils/util.js')
 let winWidth = 414;
 let winHeight = 736;
 let ratio = 2;
@@ -27,18 +28,19 @@ Page({
     dataObj: {}
     },
 
-  onLoad: function (options) {
-    var that = this;
-    var res = wx.getSystemInfoSync();
-    winWidth = res.windowWidth;
-    winHeight = res.windowHeight;
-      ratio = res.pixelRatio
-      console.log(options)
-    this.getList()
-      //this.dataObj = JSON.parse(options);//解析得到对象
-      this.dataObj = JSON.parse(options.dataObj);//解析得到对象
-      console.log("Here we should see the result")
-      console.log(this.dataObj)
+    onLoad: function (options) {
+        var that = this;
+        var res = wx.getSystemInfoSync();
+        winWidth = res.windowWidth;
+        winHeight = res.windowHeight;
+        ratio = res.pixelRatio
+        console.log(options.dataObj.length)
+        this.getList()
+        //this.dataObj = JSON.parse(options);//解析得到对象
+        //this.dataObj = JSON.parse(options.dataObj);//解析得到对象
+        console.log("Here we should see the result")
+        var parsedObj = JSON.parse(options.dataObj)
+      console.log(parsedObj)
 
       const eventChannel = this.getOpenerEventChannel()
       eventChannel.on('acceptDataFromOpenerPage', function (data) {
