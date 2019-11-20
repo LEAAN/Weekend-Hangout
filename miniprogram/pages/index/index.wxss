@@ -202,7 +202,7 @@
   position:relative;
   margin-left: 42rpx;
   width: 666rpx; 
-  height: 800rpx; 
+  height: 1000rpx; 
   border-radius: 10rpx;
   z-index: 9;
   background: #fff;
@@ -222,11 +222,13 @@
 .item0{
     box-shadow:0px 9px 10px 0px rgba(0,0,0,0.1);
 }
-.star-t1{
+.title{
   font-family: "SimHei";
   text-align: center;
   margin-top: 28rpx;
   margin-botton: 100rpx;
+  margin-left:20rpx;
+  margin-right: 20rpx;
   line-height: 80rpx;
   font-size: 32rpx;
 }

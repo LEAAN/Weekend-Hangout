@@ -2,6 +2,7 @@
 const app = getApp()
 
 import mockArr from './mock.js'
+const utils = require('../../utils/util.js')
 let winWidth = 414;
 let winHeight = 736;
 let ratio = 2;
@@ -24,6 +25,7 @@ Page({
     y: winHeight,
     animationA: {},
     list: [],
+    doubanData: [],
     distance: "",
     startX: '',
     startY: '',
@@ -32,27 +34,21 @@ Page({
   },
 
   onLoad: function (options) {
-    if (app.globalData.openid) {
-      this.setData({
-        openid: app.globalData.openid
-      })
-    }
+      var that = this;
+      var res = wx.getSystemInfoSync();
+      winWidth = res.windowWidth;
+      winHeight = res.windowHeight;
+      ratio = res.pixelRatio
+      console.log("Here we should see the result")
+      console.log(options)
+      console.log(options.requestUrl)
 
-    var that = this;
-    var res = wx.getSystemInfoSync();
-    winWidth = res.windowWidth;
-    winHeight = res.windowHeight;
-    ratio = res.pixelRatio
-    this.getList()
-
-    // Fetch Object
-    console.log(options)
-    this.dataObj = JSON.parse(options.dataObj);//解析得到对象
-
-    console.log(this.dataObj)
-    const eventChannel = this.getOpenerEventChannel()
-    eventChannel.on('acceptDataFromOpenerPage', function (data) {
-      console.log(data)
+      wx.request({
+          url: 'https://douban.uieee.com/v2/event/list?loc=108288&type=all',
+          success: function (res) {
+              that.setData({doubanData: res.data.events})
+              that.getList()
+              }
     })
   },
 
@@ -76,8 +72,8 @@ Page({
     // 当前操作，初始点与结束点距离
     let disClientX = Math.abs(endX - startX)
     let disClientY = Math.abs(endY - startY)
-    // 当滑动大于 滑块宽度的1/3翻页
-    let moveDis = 666 / (ratio * 4);
+    // 当滑动大于 滑块宽度的1/3翻页; was 83.25
+    let moveDis = 30;
     if (disX > moveDis && disClientX > moveDis) {
       var list = that.data.list;
       let index = e.currentTarget.dataset.index;
@@ -120,7 +116,7 @@ Page({
   // 模拟获取列表数据
   getList () {
     let list = this.data.list || [];
-    let arr = deepClone(mockArr)
+    let arr = this.data.doubanData
     for (let i of arr) {
       i.x = winWidth
       i.y = 0
