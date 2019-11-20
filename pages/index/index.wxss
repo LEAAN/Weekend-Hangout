@@ -192,7 +192,7 @@
 }
 .m-area {
   left: -100vw;
-  height: 696rpx; 
+  height: 830rpx; 
   width: 200vw; 
   /* background:#000; */
   background:rgba(0,0,0,0); 
@@ -202,17 +202,16 @@
   position:relative;
   margin-left: 42rpx;
   width: 666rpx; 
-  height: 692rpx; 
+  height: 1000rpx; 
   border-radius: 10rpx;
   z-index: 9;
   background: #fff;
   padding-top: 76rpx;
 }
 .image {
-  width: 260rpx;
-  height: 260rpx;
+  width: 400rpx;
+  height: 300rpx;
   margin: 0 auto;
-  border-radius: 50%;
   display: block;
 }
 .item-star{
@@ -223,11 +222,15 @@
 .item0{
     box-shadow:0px 9px 10px 0px rgba(0,0,0,0.1);
 }
-.star-t1{
+.title{
+  font-family: "SimHei";
   text-align: center;
   margin-top: 28rpx;
-  line-height: 40rpx;
-  font-size: 28rpx;
+  margin-botton: 100rpx;
+  margin-left:20rpx;
+  margin-right: 20rpx;
+  line-height: 80rpx;
+  font-size: 32rpx;
 }
 .star-t2{
   line-height: 44rpx;
@@ -246,7 +249,7 @@
   padding-right: 40rpx;
   position: relative;
 }
-.star-t31{
+.distance{
   color: #FF6428;
   font-size: 32rpx;
   line-height: 45rpx;
@@ -258,6 +261,27 @@
   top: 5rpx;
   height: 34rpx;
   width: 34rpx;
+}
+.button{
+  position: absolute;
+  left: 45rpx;
+  top: -10rpx;
+  height: 59rpx;
+  width: 60rpx;
+}
+.button-like-left{
+  position: absolute;
+  left: 45rpx;
+  top: -10rpx;
+  height: 59rpx;
+  width: 60rpx;
+}
+.button-dislike-right{
+  position: absolute;
+  left: 345rpx;
+  top: -10rpx;
+  height: 60rpx;
+  width: 60rpx;
 }
 /* 滑块end */
 /* 评价星级展示 start */
