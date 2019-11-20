@@ -1,6 +1,4 @@
 // pages/index/index.js
-//import mockArr from './mock.js'
-const utils = require('../../utils/util.js')
 let winWidth = 414;
 let winHeight = 736;
 let ratio = 2;
@@ -23,18 +21,15 @@ Page({
         winWidth = res.windowWidth;
         winHeight = res.windowHeight;
         ratio = res.pixelRatio
-        console.log("Here we should see the result")
-        console.log(options)
-        console.log(options.requestUrl)
 
+        var requestUrl = 'https://douban.uieee.com/v2/event/list?loc=' + options.cityCode + '&type=' + options.eventType
         wx.request({
-            url: 'https://douban.uieee.com/v2/event/list?loc=108288&type=all',
+            url: requestUrl,
             success: function (res) {
                 that.setData({doubanData: res.data.events})
                 that.getList()
                 }
     })
-
   },
 
   touchStart(e) {
