@@ -34,19 +34,29 @@ Page({
         winWidth = res.windowWidth;
         winHeight = res.windowHeight;
         ratio = res.pixelRatio
-        console.log(options.dataObj.length)
-        this.getList()
-        //this.dataObj = JSON.parse(options);//解析得到对象
-        //this.dataObj = JSON.parse(options.dataObj);//解析得到对象
+        //this.getList()
         console.log("Here we should see the result")
-        var parsedObj = JSON.parse(options.dataObj)
-      console.log(parsedObj)
+        console.log(options)
+        console.log(options.requestUrl)
 
-      const eventChannel = this.getOpenerEventChannel()
-      eventChannel.on('acceptDataFromOpenerPage', function (data) {
-          console.log(data)
-      })
+        wx.request({
+            url: 'https://douban.uieee.com/v2/event/list?loc=108288&type=all',
+            success: function (res) {
+                console.log(res.data.events)
+
+                let list = that.data.list || [];
+                let arr = res.data.events;
+                for (let i of arr) {
+                    i.x = winWidth
+                    i.y = 0
+                    list.unshift(i)
+                }
+                that.setData({ list })
+                }
+    })
+
   },
+
   touchStart(e) {
     console.log(e, 'start')
     let startX = e.touches[0].clientX;
@@ -103,7 +113,7 @@ Page({
     })
   },
   // 模拟获取列表数据
-  getList () {
+  getList (mockArr) {
     let list = this.data.list || [];
     let arr = deepClone(mockArr)
     for (let i of arr) {
@@ -112,5 +122,5 @@ Page({
       list.unshift(i)
     }
     this.setData({ list })
-  }
+    }
 })

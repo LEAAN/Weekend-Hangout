@@ -34,20 +34,23 @@ Page({
   getDataFromAPI: function (e) {
     var baseDoubanURL = "https://douban.uieee.com/v2/event/list?";
     var realRequestURL = baseDoubanURL + "loc=" + this.data.cityCode[this.data.cityIndex] + "&type=" + this.data.interestsArray[this.data.interestsIndex];
+      wx.navigateTo({
+          url: '/pages/index/index?requestUrl=' + baseDoubanURL + '&type=' + this.data.interestsArray[this.data.interestsIndex]
+      })
 
     var dataObj = { name: '我是name', extra: '我是extraaaaa' };
-    wx.request({
-      url: realRequestURL,
-        success: function (res) {
-            console.log(JSON.stringify(res.data).length)
-            wx.navigateTo({
-                url: '/pages/index/index?dataObj=' + JSON.stringify(res.data)
-                //url: '/pages/index/index?dataObj=' + JSON.stringify(res.data.districts[0])
-                //url: '/pages/index/index?dataObj=' + JSON.stringify(dataObj)
+    //wx.request({
+    //  url: realRequestURL,
+    //    success: function (res) {
+    //        console.log(JSON.stringify(res.data).length)
+    //        wx.navigateTo({
+    //            url: '/pages/index/index?dataObj=' + JSON.stringify(res.data)
+    //            url: '/pages/index/index?dataObj=' + JSON.stringify(res.data.districts[0])
+    //            url: '/pages/index/index?dataObj=' + JSON.stringify(dataObj)
 
-            })
-      }
-    })
+    //        })
+    //  }
+    //})
   },
   //事件处理函数
   getCardView: function () {
