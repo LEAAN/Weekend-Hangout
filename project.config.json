@@ -3,6 +3,8 @@
 	"packOptions": {
 		"ignore": []
 	},
+	"miniprogramRoot": "miniprogram/",
+	"cloudfunctionRoot": "cloudfunctions/",
 	"setting": {
 		"urlCheck": true,
 		"es6": true,
@@ -12,9 +14,9 @@
 		"autoAudits": false
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.7.2",
-	"appid": "wx3f973571553f0ec3",
-	"projectname": "wqs-slider",
+	"libVersion": "2.9.3",
+	"appid": "wx7c6c874dd9e155e2",
+	"projectname": "Weekend-Hangout",
 	"debugOptions": {
 		"hidedInDevtools": []
 	},

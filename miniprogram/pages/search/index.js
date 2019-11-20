@@ -13,8 +13,11 @@ Page({
     CustomBar: app.globalData.CustomBar,
     userInfo: {},
     hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo')
+    canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    dataObj: { name: '我是name', extra: '我是extra' },
+    mockedDoubanItem: {}
   },
+
   // city Change Listener
   bindPickerChange: function (e) {
     console.log('picker发送选择改变，携带值为', e.detail.value)
@@ -22,6 +25,7 @@ Page({
       cityIndex: e.detail.value
     })
   },
+
   // interests Change Listener
   bindPickerInterestsChange: function (e) {
     console.log('picker发送选择改变，携带值为', e.detail.value)
@@ -29,6 +33,7 @@ Page({
       interestsIndex: e.detail.value
     })
   },
+
   // request data from API
   getDataFromAPI: function (e) {
     var baseDoubanURL = "https://douban.uieee.com/v2/event/list?";
@@ -37,19 +42,23 @@ Page({
     wx.request({
       url: realRequestURL,
       success: function (res) {
-        console.log(res);
+        wx.navigateTo({
+          url: '/pages/index/index?dataObj=' + JSON.stringify(res.data.districts[0])
+        })
       }
     })
     wx.navigateTo({
       url: '/pages/index/index',
     })
   },
+
   //事件处理函数
   getCardView: function () {
     wx.navigateTo({
       url: '/pages/index/index',
     })
   },
+
   onLoad: function () {
     if (app.globalData.userInfo) {
       this.setData({
@@ -78,6 +87,7 @@ Page({
       })
     }
   },
+
   getUserInfo: function (e) {
     console.log(e)
     app.globalData.userInfo = e.detail.userInfo
@@ -85,5 +95,5 @@ Page({
       userInfo: e.detail.userInfo,
       hasUserInfo: true
     })
-  }
+  },
 })
