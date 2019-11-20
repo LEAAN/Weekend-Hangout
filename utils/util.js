@@ -14,18 +14,6 @@ const formatNumber = n => {
   return n[1] ? n : '0' + n
 }
 
-let formatString = function (str) {
-    if (typeof (str) != "string") {
-        console.log('wait what are you doing here give me a string =-=')
-        console.log(typeof(str))
-        return;
-    }
-    str = str.replace(/\ +/g, "");
-    str = str.replace(/[\r\n]/g, "");
-    return str;
-}
-
 module.exports = {
     formatTime: formatTime,
-    formatString: formatString,
 }
