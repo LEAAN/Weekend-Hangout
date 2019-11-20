@@ -6,7 +6,7 @@
       <movable-view class='m-item' wx:for="{{list}}" wx:key="item" x="{{item.x}}" y="{{item.y}}" damping="50" direction="all" bindchange="onChange" data-index="{{index}}" catchtouchend="touchEnd" catchtouchstart="touchStart" out-of-bounds="true" data-auth="{{item.auth}}" data-id="{{item.t_user_id}}">
         <!-- 根据自己的需求替换此区域 start -->
         <view class='m-item-box item{{(index == 0 || index == list.length -1) ? 0 : 1}} '>
-          <view class='star-t1'>{{item.title || '--'}}</view>
+          <view class='title'>{{item.title || '--'}}</view>
           <image src="{{item.image}}" class="image"></image>
           <view class="item-star">
             <block wx:for="{{[0,1,2,3,4]}}" wx:key="item" wx:for-item="cItem">
@@ -23,7 +23,8 @@
           <view class='star-t3'>
             <image class='icon-img' src="/pages/index/img/icon18.png"></image>
             {{item.address || '--'}}
-            <view class='distance'>距离 {{''}}{{item.distance}}km</view>
+            <!--<view class='distance'>活动链接 {{''}}{{item.distance}}</view>-->
+            <navigator class='distance' url = '{{item.address}}'>活动链接</navigator>
             <view class='star-t2' display='flex'>
             </view>
           </view>
