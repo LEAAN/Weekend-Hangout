@@ -1,6 +1,5 @@
 <!--pages/index/index.wxml-->
 <view class='page-box box'>
-
   <view class="m-box">
     <movable-area class="m-area">
       <movable-view class='m-item' wx:for="{{list}}" wx:key="item" x="{{item.x}}" y="{{item.y}}" damping="50" direction="all" bindchange="onChange" data-index="{{index}}" catchtouchend="touchEnd" catchtouchstart="touchStart" out-of-bounds="true" data-auth="{{item.auth}}" data-id="{{item.t_user_id}}">
@@ -13,7 +12,7 @@
               <view class='c-star {{((item.stars/2)-1) >= index ? "red-star":""}}' data-index="{{index}}"></view>
             </block>
           </view>
-          <view class="auth-box">要报名</view>
+          <view class="auth-box"data-index="{{index}}" bindtouchend="joinEvent">要报名</view>
           <view class='star-t2'>
             <image class='icon-img' src="/pages/index/img/icon19.png"></image>
             {{item.begin_time || '--'}}
@@ -26,6 +25,7 @@
             <view class='star-t2' display='flex'>
             </view>
           </view>
+          <button data-index="{{index}}" bindtouchend='fetchParticipants'>查看好友参与</button>
         </view>
         <!-- 根据自己的需求替换此区域 end -->
       </movable-view>

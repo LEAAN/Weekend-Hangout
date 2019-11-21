@@ -26,30 +26,53 @@ Page({
     animationA: {},
     list: [],
     doubanData: [],
-    distance: "",
+    distance: '',
     startX: '',
     startY: '',
     eventId: '',
     dataObj: {}
   },
 
-  onLoad: function (options) {
-      var that = this;
-      var res = wx.getSystemInfoSync();
-      winWidth = res.windowWidth;
-      winHeight = res.windowHeight;
-      ratio = res.pixelRatio
-      console.log("Here we should see the result")
-      console.log(options)
-      console.log(options.requestUrl)
+  joinEvent(e) {
+    let index = e.currentTarget.dataset.index;
+    var item = this.data.list[index];
+    this.engageEvent(item)
+  },
 
-      wx.request({
-          url: 'https://douban.uieee.com/v2/event/list?loc=108288&type=all',
-          success: function (res) {
-              that.setData({doubanData: res.data.events})
-              that.getList()
-              }
+  fetchParticipants(e) {
+    let index = e.currentTarget.dataset.index;
+    var item = this.data.list[index];
+
+    wx.navigateTo({
+      url: '/pages/participants/index',
+      events: {
+        eventIdTransfer: function(data) {
+          wx.showToast({
+            title: '查看感兴趣的好友',
+          })
+        }
+      },
+      success: res => {
+        res.eventChannel.emit('eventIdTransfer', { data: item.id })
+      }
     })
+  },
+
+  onLoad: function (options) {
+    var that = this;
+    var res = wx.getSystemInfoSync();
+    winWidth = res.windowWidth;
+    winHeight = res.windowHeight;
+    ratio = res.pixelRatio
+    this.getList()
+
+    // wx.request({
+    //     url: 'https://douban.uieee.com/v2/event/list?loc=108288&type=all',
+    //     success: function (res) {
+    //         that.setData({doubanData: res.data.events})
+    //         that.getList()
+    //         }
+    // })
   },
 
   touchStart(e) {
@@ -94,9 +117,6 @@ Page({
     } else if (disClientX < 1 && disClientY < 1) {
       // 点击进入
       console.log('点击进入详情')
-      let index = e.currentTarget.dataset.index;
-      var item = that.data.list[index];
-      this.engageEvent(item)
     } else {
       var list = that.data.list;
       let index = e.currentTarget.dataset.index;
@@ -105,7 +125,7 @@ Page({
       that.setData({ list })
     }
   },
-
+  
   onChange: function (e) {
     var that = this;
     that.setData({
@@ -113,10 +133,11 @@ Page({
     })
   },
 
-  // 模拟获取列表数据
+    // 模拟获取列表数据
   getList () {
     let list = this.data.list || [];
-    let arr = this.data.doubanData
+    // let arr = this.data.doubanData
+    let arr = deepClone(mockArr)
     for (let i of arr) {
       i.x = winWidth
       i.y = 0
@@ -126,21 +147,24 @@ Page({
   },
 
   engageEvent (item) {
+    var that = this;
     const db = wx.cloud.database()
-    
+    const _ = db.command
     var userInfo = app.globalData.userInfo.nickName + '$ep#' + app.globalData.userInfo.avatarUrl;
-    var getEvent = false;
-    db.collection('events').doc(this.data.eventId).get({
+
+    db.collection('events').doc(item.id).get({
       success: res => {
-        if (!res.participants.hasOwnProperty(userInfo)) {
-          res.participants[userInfo] = true
-          db.collection('events').doc(this.data.eventId).update({
-            data: res,
+        if (!res.data.participants.hasOwnProperty(userInfo)){
+          res.data.participants[userInfo] = true
+          db.collection('events').doc(item.id).update({
+            data: {
+              participants: _.set(res.data.participants)
+            },
             success: res => {
               wx.showToast({
                 title: '参与活动成功',
               })
-              console.log('[数据库] [新增记录] 成功，记录 _id: ', res._id)
+              console.log('[数据库] [新增记录] 成功，记录 _id: ', item.id)
               getEvent = true
             },
             fail: err => {
@@ -151,52 +175,57 @@ Page({
               console.error('[数据库] [新增记录] 失败：', err)
             },
           })
+        } else {
+          wx.showToast({
+            title: '已参与此活动',
+          })
+          getEvent = true
         }
+      },
+      fail: e => {
+        var userSet = {}
+        userSet[userInfo] = true
+        db.collection('events').add({
+          data: {
+            _id: item.id,
+            event: item,
+            participants: userSet
+          },
+          success: res => {
+            // 在返回结果中会包含新创建的记录的 _id
+            that.setData({
+              eventId: item.id
+            })
+            wx.showToast({
+              title: '参与活动成功',
+            })
+            console.log('[数据库] [新增记录] 成功，记录 _id: ', item.id)
+          },
+          fail: err => {
+            wx.showToast({
+              icon: 'none',
+              title: '参与活动失败'
+            })
+            console.error('[数据库] [新增记录] 失败：', err)
+          }
+        })
       }
     })
-
-    if (!getEvent) {
-      var userSet = {}
-      userSet[userInfo] = true
-
-      db.collection('events').add({
-        data: {
-          event: item,
-          participants: userSet
-        },
-        success: res => {
-          // 在返回结果中会包含新创建的记录的 _id
-          this.setData({
-            eventId: res._id
-          })
-          wx.showToast({
-            title: '参与活动成功',
-          })
-          console.log('[数据库] [新增记录] 成功，记录 _id: ', res._id)
-        },
-        fail: err => {
-          wx.showToast({
-            icon: 'none',
-            title: '参与活动失败'
-          })
-          console.error('[数据库] [新增记录] 失败：', err)
-        }
-      })
-    }
   },
 
-  disengageEvent () {
-    if (this.data.eventId) {
+  disengageEvent (eventId) {
+    var that = this
+    if (eventId) {
       const db = wx.cloud.database()
       var userInfo = app.globalData.userInfo.nickName + '$ep#' + app.globalData.userInfo.avatarUrl;
-      var getEvent = false;
-
-      db.collection('events').doc(this.data.eventId).get({
+      db.collection('events').doc(eventId).get({
         success: res => {
-          if (!res.participants.hasOwnProperty(userInfo)) {
+          if (res.participants.hasOwnProperty(userInfo)) {
             res.participants[userInfo] = false
-            db.collection('events').doc(this.data.eventId).update({
-              data: res,
+            db.collection('events').doc(eventId).update({
+              data: {
+                participants: _.set(res.data.participants)
+              },
               success: res => {
                 wx.showToast({
                   title: '取消活动成功',
@@ -214,14 +243,17 @@ Page({
   },
 
   queryEvents () {
+    var that = this
     const db = wx.cloud.database()
+    var userInfo = app.globalData.userInfo.nickName + '$ep#' + app.globalData.userInfo.avatarUrl;
+
     // 查询当前用户所有的 events
     db.collection('events').where({
-      _openid: this.data.openid
+      participants: hasOwnProperty(userInfo)
     }).get({
       success: res => {
-        this.setData({
-          queryResult: JSON.stringify(res.data, null, 2)
+        that.setData({
+          eventResult: JSON.stringify(res.data, null, 2)
         })
         console.log('[数据库] [查询记录] 成功: ', res)
       },

@@ -37,9 +37,10 @@ Page({
   getDataFromAPI: function (e) {
     var baseDoubanURL = "https://douban.uieee.com/v2/event/list?";
     var realRequestURL = baseDoubanURL + "loc=" + this.data.cityCode[this.data.cityIndex] + "&type=" + this.data.interestsArray[this.data.interestsIndex];
-      wx.navigateTo({
-          url: '/pages/index/index?requestUrl=' + baseDoubanURL + '&type=' + this.data.interestsArray[this.data.interestsIndex]
-      })
+    wx.navigateTo({
+      url: '/pages/index/index',
+      // url: '/pages/index/index?requestUrl=' + baseDoubanURL + '&type=' + this.data.interestsArray[this.data.interestsIndex]
+    })
 
     var dataObj = { name: '我是name', extra: '我是extraaaaa' };
     //wx.request({

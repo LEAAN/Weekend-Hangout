@@ -24,8 +24,5 @@
     <view>
       <button class='cu-btn' form-type='submit'  bindTap='getCardView'>Search</button>
     </view>
-</form>
-</view>
-<view class="text-center margin-top">
-  <text class="text-grey text-xl">Hello world</text>
+  </form>
 </view>
